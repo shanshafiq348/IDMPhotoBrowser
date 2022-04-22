@@ -146,6 +146,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 @synthesize actionsSheet = _actionsSheet, activityViewController = _activityViewController;
 @synthesize trackTintColor = _trackTintColor, progressTintColor = _progressTintColor;
 @synthesize delegate = _delegate;
+@synthesize isRTL = _isRTL;
 
 #pragma mark - NSObject
 
@@ -1217,7 +1218,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 - (void)updateToolbar {
     // Counter
 	if ([self numberOfPhotos] > 1) {
-		_counterLabel.text = [NSString stringWithFormat:@"%lu %@ %lu", (unsigned long)(_currentPageIndex+1), IDMPhotoBrowserLocalizedStrings(@"of"), (unsigned long)[self numberOfPhotos]];
+        _counterLabel.text = [NSString stringWithFormat:@"%lu %@ %lu", (unsigned long)(_isRTL ? [self numberOfPhotos] - _currentPageIndex : _currentPageIndex+1), IDMPhotoBrowserLocalizedStrings(@"of"), (unsigned long)[self numberOfPhotos]];
 	} else {
 		_counterLabel.text = nil;
 	}
@@ -1324,8 +1325,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 - (void)setInitialPageIndex:(NSUInteger)index {
     // Validate
     if (index >= [self numberOfPhotos]) index = [self numberOfPhotos]-1;
-    _initalPageIndex = index;
-    _currentPageIndex = index;
+    _initalPageIndex = _isRTL? ([self numberOfPhotos] - 1) - index : index ;
+    _currentPageIndex = _isRTL ? ([self numberOfPhotos] - 1) - index : index ;
 	if ([self isViewLoaded]) {
         [self jumpToPageAtIndex:index];
         if (!_viewIsActive) [self tilePages]; // Force tiling if view is not visible
