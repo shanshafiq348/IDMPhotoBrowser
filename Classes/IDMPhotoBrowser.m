@@ -66,6 +66,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     CGFloat _statusBarHeight;
 
     BOOL _isdraggingPhoto;
+    BOOL _isRTL;
 
     CGRect _senderViewOriginalFrame;
     //UIImage *_backgroundScreenshot;
@@ -146,7 +147,6 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 @synthesize actionsSheet = _actionsSheet, activityViewController = _activityViewController;
 @synthesize trackTintColor = _trackTintColor, progressTintColor = _progressTintColor;
 @synthesize delegate = _delegate;
-@synthesize isRTL = _isRTL;
 
 #pragma mark - NSObject
 
@@ -192,6 +192,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         _scaleImage = nil;
 
         _isdraggingPhoto = NO;
+        _isRTL = NO;
         
         _statusBarHeight = 20.f;
         _doneButtonRightInset = 20.f;
@@ -1322,9 +1323,10 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 #pragma mark - Properties
 
-- (void)setInitialPageIndex:(NSUInteger)index {
+- (void)setInitialPageIndex:(NSUInteger)index mode:(BOOL)isRTL {
     // Validate
     if (index >= [self numberOfPhotos]) index = [self numberOfPhotos]-1;
+    _isRTL = isRTL;
     _initalPageIndex = _isRTL? ([self numberOfPhotos] - 1) - index : index ;
     _currentPageIndex = _isRTL ? ([self numberOfPhotos] - 1) - index : index ;
 	if ([self isViewLoaded]) {

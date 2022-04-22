@@ -39,7 +39,6 @@
 @property (nonatomic) BOOL displayCounterLabel;
 @property (nonatomic) BOOL displayArrowButton;
 @property (nonatomic) BOOL displayActionButton;
-@property (nonatomic) BOOL isRTL;
 @property (nonatomic, strong) NSArray *actionButtonTitles;
 @property (nonatomic, weak) UIImage *leftArrowImage, *leftArrowSelectedImage;
 @property (nonatomic, weak) UIImage *rightArrowImage, *rightArrowSelectedImage;
@@ -89,7 +88,7 @@
 - (void)reloadData;
 
 // Set page that photo browser starts on
-- (void)setInitialPageIndex:(NSUInteger)index;
+- (void)setInitialPageIndex:(NSUInteger)index mode:(BOOL)isRTL;
 
 // Get IDMPhoto at index
 - (id<IDMPhoto>)photoAtIndex:(NSUInteger)index;
