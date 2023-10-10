@@ -576,11 +576,21 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 }
 
 - (UIImage*)getImageFromView:(UIView *)view {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 2);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
+    if (!CGSizeEqualToSize(view.bounds.size, CGSizeZero)) {
+        UIGraphicsImageRendererFormat *format = [UIGraphicsImageRendererFormat defaultFormat];
+        format.scale = 2.0; // Set the desired scale factor (e.g., 2 for Retina displays)
+
+        UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:view.bounds.size format:format];
+
+        UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+            [view.layer renderInContext:rendererContext.CGContext];
+        }];
+
+        return image;
+    } else {
+        // Handle the case when view.bounds.size is zero (e.g., an empty view)
+        return nil; // Or return an appropriate default image or handle the error as needed
+    }
 }
 
 - (UIViewController *)topviewController
